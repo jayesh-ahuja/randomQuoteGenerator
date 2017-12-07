@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Random quote</title>
+	<style type="text/css">
+		#box{
+			width: 500px;
+			height: 250px;
+			text-align: center;
+			
+			background-color: #ffca28;
+			 position: absolute;
+			top:0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+
+				    margin: auto;
+		}
+
+		*{
+			margin, padding: 0;
+		}
+
+		#btn{
+			font-family: Georgia, serif;
+			width: 100px;
+			height: 30px;
+			bottom: 0;
+			right: 0;
+			position: absolute;
+			font-weight: bold;
+
+		}
+
+		#tweet{
+			font-family: Georgia, serif;
+			width: 100px;
+			height: 30px;
+			left: 0;
+			bottom: 0;
+			position: absolute;
+			font-weight: bold;
+		}
+
+		#heading{
+			text-align: center;
+			
+			font-family: Georgia, serif;
+			font-size: 66px;
+		}
+
+		#display{
+			margin: 80px;
+			font-family: "Comic Sans MS", cursive, sans-serif;
+			font-weight: bold;
+		}
+
+		
+
+		body{
+			background-color: #fff59d;
+
+		}
+	</style>
+	<script
+  src="https://code.jquery.com/jquery-3.2.1.js"
+  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  crossorigin="anonymous"></script>
+</head>
+<body>
+	<div id="heading"> The Quote Shop </div>	
+	
+	
+	<div id="box">
+			
+			<div id="display">
+				
+			</div>
+			<div id="author"></div>
+			<button id="tweet" onclick="tweet()">Tweet it!</button>
+			<button id="btn" >New Quote</button>
+			
+	</div>
+	
+</body>
+<script type="text/javascript">
+ 
+		
+	function newQuote(){
+
+	/*	$.ajax({
+			Origin: '*',
+  type: 'GET',
+  dataType: 'jsonp',
+  url: 'https://crossorigin.me/http://api.forismatic.com/api/1.0/?method=getQuote&format=jsonp&lang=en',
+  success: function(data){
+    $("display").html(data.quoteText + "<br>" + data.quoteAuthor);
+  }
+}); */
+	 /*	var i = Math.floor(Math.random() *4);
+		var quotes = ["If you want to achieve greatness stop asking for permission.",
+
+ "Things work out best for those who make the best of how things work out.",
+
+"To live a creative life, we must lose our fear of being wrong.",
+
+ "If you are not willing to risk the usual you will have to settle for the ordinary.",
+
+ "Trust because you are willing to accept the risk, not because it's safe or certain.",
+
+ "Take up one idea. Make that one idea your life--think of it, dream of it, live on that idea. Let the brain, muscles, nerves, every part of your body, be full of that idea, and just leave every other idea alone. This is the way to success.",
+
+"All our dreams can come true if we have the courage to pursue them.",
+
+"Good things come to people who wait, but better things come to those who go out and get them." ,
+
+ "If you do what you always did, you will get what you always got.",
+
+"Success is walking from failure to failure with no loss of enthusiasm."];
+		document.getElementById("display").innerHTML = quotes[i] ;  */
+
+		
+	}
+	// https://api.jquery.com/jquery.getjson/#jsonp
+
+$('#btn').click(function() {
+  $.ajax({
+      url: "https://api.forismatic.com/api/1.0/",
+      jsonp: "jsonp",
+      dataType: "jsonp",
+      data: {
+        method: "getQuote",
+        lang: "en",
+        format: "jsonp"
+      }
+    })
+    .done(update)
+   // .fail(handleErr);
+});
+var tweet1;
+function update(response) {
+  //$('#log').prepend('<pre>' + $('#response').html() + '</pre>');
+  $('#display').html(JSON.stringify(response.quoteText) + '<br>' + '-' + (JSON.stringify(response.quoteAuthor)).replace(/\"/g, "") );
+  tweet1 = JSON.stringify(response.quoteText) + '-' + (JSON.stringify(response.quoteAuthor)).replace(/\"/g, "")
+}
+	
+function handleErr(jqxhr, textStatus, err) {
+  console.log("Request Failed: " + textStatus + ", " + err);
+}
+	
+
+	function tweet(){
+		location.href = 'https://twitter.com/intent/tweet?text=' + tweet1;
+	}
+</script>
+</html>
